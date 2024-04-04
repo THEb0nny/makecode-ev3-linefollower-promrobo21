@@ -1,0 +1,37 @@
+{
+    "name": "LineFollowerPromrobo21",
+    "version": "0.16.0",
+    "description": "Methods (blocks) for working with ev3 to participate in competitions.",
+    "dependencies": {
+        "ev3": "*",
+        "automation": "github:microsoft/pxt-automation#v0.0.3",
+        "nxt-light-sensor": "*"
+    },
+    "files": [
+        "main.ts",
+        "README.md",
+        "custom.ts",
+        "lw.ts",
+        "enums.ts",
+        "motions.ts",
+        "sensors.ts",
+        "ns.ts",
+        "params.ts",
+        "tune.ts"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "targetVersions": {
+        "branch": "v1.4.40",
+        "tag": "v1.4.40",
+        "commits": "https://github.com/microsoft/pxt-ev3/commits/5f46b7c20979151b8ba99ffb111fdf283686c778",
+        "target": "1.4.40",
+        "pxt": "9.3.13",
+        "targetId": "ev3"
+    },
+    "supportedTargets": [
+        "ev3"
+    ],
+    "preferredEditor": "tsprj"
+}
