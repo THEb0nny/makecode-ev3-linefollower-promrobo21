@@ -16,7 +16,7 @@ namespace motions {
             if (params.Ki) lineFollow4SensorKi = params.Ki;
             if (params.Kd) lineFollow4SensorKd = params.Kd;
             if (params.N) lineFollow4SensorN = params.N;
-            if (params.C) lineFollow4SensorSideSensCoef = params.N;
+            if (params.C) lineFollow4SensorSideSensCoef = params.C;
         }
 
         automation.pid1.setGains(lineFollow4SensorKp, lineFollow4SensorKi, lineFollow4SensorKd); // Установка коэффицентов регулятора
@@ -41,25 +41,26 @@ namespace motions {
             let refLS2 = sensors.GetNormRefValCS(refRawLS2, B_REF_RAW_LS2, W_REF_RAW_LS2);
             let refLS3 = sensors.GetNormRefValCS(refRawLS3, B_REF_RAW_LS3, W_REF_RAW_LS3);
             let refLS4 = sensors.GetNormRefValCS(refRawLS4, B_REF_RAW_LS4, W_REF_RAW_LS4);
-            let error = (refLS2 - refLS3) + (refRawLS1 - refRawLS4) * lineFollow4SensorSideSensCoef; // Ошибка регулирования
+            // let error = (lineFollow4SensorSideSensCoef * refLS1 + refLS2) - (refLS3 + refLS4 * lineFollow4SensorSideSensCoef); // Ошибка регулирования
+            let error = (refLS2 - refLS3) + (refLS1 - refLS4) * lineFollow4SensorSideSensCoef; // Ошибка регулирования
             automation.pid1.setPoint(error); // Передать ошибку регулятору
-            let U = 0;
-            if (refRawLS1 > LINE_REF_TRESHOLD) {
-                control.timer1.reset();
-                lastSensor = 1;
-            } else if (refRawLS2 > LINE_REF_TRESHOLD || refRawLS3 > LINE_REF_TRESHOLD) {
-                control.timer1.reset();
-                lastSensor = 2;
-            } else if (refRawLS4 > LINE_REF_TRESHOLD) {
+            let U = automation.pid1.compute(dt, 0); // Управляющее воздействие
+            if (refLS1 < LINE_REF_TRESHOLD) {
                 control.timer1.reset();
                 lastSensor = 3;
+            } else if (refLS2 < LINE_REF_TRESHOLD || refLS3 < LINE_REF_TRESHOLD) {
+                control.timer1.reset();
+                lastSensor = 2;
+            } else if (refLS4 < LINE_REF_TRESHOLD) {
+                control.timer1.reset();
+                lastSensor = 1;
             } else if (control.timer1.millis() > 100) {
                 U = (2 - lastSensor) * lineFollow4SensorSpeed;
-            } else {
-                U = automation.pid1.compute(dt, 0); // Управляющее воздействие
             }
             //CHASSIS_MOTORS.steer(U, lineFollow4SensorSpeed); // Команда моторам
-            chassis.ChassisControl(U, lineFollow4SensorSpeed);
+            // chassis.ChassisControl(U, lineFollow4SensorSpeed);
+            CHASSIS_L_MOTOR.run(lineFollow4SensorSpeed + U);
+            CHASSIS_R_MOTOR.run(lineFollow4SensorSpeed - U);
             if (debug) {
                 brick.clearScreen(); // Очистка экрана
                 brick.printValue("refLS1", refLS1, 1);

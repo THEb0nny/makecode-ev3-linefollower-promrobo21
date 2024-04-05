@@ -211,6 +211,7 @@ namespace custom {
 
             // Обрабатываем нажатие ENTER
             if (brick.buttonEnter.wasPressed()) {
+                brick.clearScreen();
                 if (cursor == 0 || cursor == screenParamsNum + 1) { // Нажали на строку RUN TEST?
                     music.playToneInBackground(Note.D, 100); // Сигнал, что было запущено
                     // Запускаем выполнение теста
