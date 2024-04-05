@@ -1,6 +1,6 @@
 {
     "name": "LineFollowerPromrobo21",
-    "version": "0.16.0",
+    "version": "0.1.0",
     "description": "Methods (blocks) for working with ev3 to participate in competitions.",
     "dependencies": {
         "ev3": "*",

@@ -223,7 +223,8 @@ namespace custom {
                             N: methodScreens.LW_4S.params.N.val,
                             C: methodScreens.LW_4S.params.C.val
                         };
-                        motions.LineFollowToIntersection(AfterMotion.BreakStop, params, true);
+                        motions.LineFollow4SensorWithLossProtection(params, true);
+                        pause(100);
                     }
                 } else { // Если нажали на обычную строку с параметром, то подтверждаем для возможности его изменения
                     music.playToneInBackground(Note.F, 50); // Сигнал

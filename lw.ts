@@ -24,10 +24,12 @@ namespace motions {
         automation.pid1.setControlSaturation(-200, 200); // Установка диапазона регулирования регулятора
         automation.pid1.reset(); // Сброс регулятора
 
+        control.timer8.reset();
         control.timer1.reset();
         let lastSensor = 2; // Переменная для хранения последнего сенсора, который видел линию, изначально центральный
         let prevTime = 0; // Переменная предыдущего времения для цикла регулирования
-        while (brick.buttonEnter.wasPressed()) {
+        while (true) {
+            if (control.timer8.millis() > 1000 && brick.buttonEnter.wasPressed()) break;
             let currTime = control.millis(); // Текущее время
             let dt = currTime - prevTime; // Время за которое выполнился цикл
             prevTime = currTime; // Новое время в переменную предыдущего времени
@@ -68,8 +70,10 @@ namespace motions {
                 brick.printValue("U", U, 6);
                 brick.printValue("dt", dt, 12);
             }
-            control.pauseUntilTime(currTime, 10); // Ожидание выполнения цикла
+            control.pauseUntilTime(currTime, 2); // Ожидание выполнения цикла
         }
+        music.playToneInBackground(262, 300); // Издаём сигнал завершения
+        chassis.ActionAfterMotion(lineFollow4SensorSpeed, AfterMotion.Rolling); // Действие после алгоритма движения
     }
 
     /**
@@ -196,7 +200,7 @@ namespace motions {
                 brick.printValue("U", U, 6);
                 brick.printValue("dt", dt, 12);
             }
-            control.pauseUntilTime(currTime, 10); // Ожидание выполнения цикла
+            control.pauseUntilTime(currTime, 2); // Ожидание выполнения цикла
         }
         music.playToneInBackground(262, 300); // Издаём сигнал завершения
         chassis.ActionAfterMotion(lineFollow4SensorSpeed, actionAfterMotion); // Действие после алгоритма движения
