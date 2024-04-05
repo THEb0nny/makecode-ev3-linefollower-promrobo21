@@ -42,7 +42,7 @@ function Main() { // Определение главной функции
 
     // Установка коэффицентов движения по линии двумя датчиками
     motions.lineFollow4SensorSpeed = 20;
-    motions.lineFollow4SensorKp = 0.5;
+    motions.lineFollow4SensorKp = 0.2;
     motions.lineFollow4SensorKd = 0;
     motions.lineFollow4SensorSideSensCoef = 6;
 

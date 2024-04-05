@@ -41,7 +41,6 @@ namespace motions {
             let refLS2 = sensors.GetNormRefValCS(refRawLS2, B_REF_RAW_LS2, W_REF_RAW_LS2);
             let refLS3 = sensors.GetNormRefValCS(refRawLS3, B_REF_RAW_LS3, W_REF_RAW_LS3);
             let refLS4 = sensors.GetNormRefValCS(refRawLS4, B_REF_RAW_LS4, W_REF_RAW_LS4);
-            // let error = (lineFollow4SensorSideSensCoef * refLS1 + refLS2) - (refLS3 + refLS4 * lineFollow4SensorSideSensCoef); // Ошибка регулирования
             let error = (refLS2 - refLS3) + (refLS1 - refLS4) * lineFollow4SensorSideSensCoef; // Ошибка регулирования
             automation.pid1.setPoint(error); // Передать ошибку регулятору
             let U = automation.pid1.compute(dt, 0); // Управляющее воздействие
@@ -54,7 +53,7 @@ namespace motions {
             } else if (refLS4 < LINE_REF_TRESHOLD) {
                 control.timer1.reset();
                 lastSensor = 1;
-            } else if (control.timer1.millis() > 100) {
+            } else if (control.timer1.millis() > 75) {
                 U = (2 - lastSensor) * lineFollow4SensorSpeed;
             }
             //CHASSIS_MOTORS.steer(U, lineFollow4SensorSpeed); // Команда моторам
