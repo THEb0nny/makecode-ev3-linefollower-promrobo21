@@ -15,3 +15,13 @@ namespace custom {
 //% color="#00751B" weight="89" icon="\uf018"
 namespace motions {
 }
+
+//% block="Chassis"
+//% block.loc.ru="Шасси"
+namespace chassis {
+}
+
+//% block="Automation"
+//% block.loc.ru="Автоматизация"
+namespace automation {
+}
